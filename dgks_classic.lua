@@ -12,8 +12,9 @@
 	-- Random Emote
 --Reduce externals/libs
 --NPC Emote Targeting
+--FIXME Remove classic emotes
 
-local version = "8.0.1." .. "@project-revision@"
+local version = "1.13.02." .. "@project-revision@"
 local streak = 0
 local deathstreak = 0
 local multikill = 0
