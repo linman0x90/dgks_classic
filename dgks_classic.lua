@@ -13,6 +13,7 @@
 --Reduce externals/libs
 --NPC Emote Targeting
 --FIXME Remove classic emotes
+--Just making a change so twitch triggers an update
 
 local version = "1.13.02." .. "@project-revision@"
 local streak = 0
