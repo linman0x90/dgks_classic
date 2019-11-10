@@ -14,8 +14,12 @@
 --NPC Emote Targeting
 --FIXME Remove classic emotes
 --Just making a change so twitch triggers an update
+--Cross Character Killer Klvl Kclass KGuild Victim Vlvl VClass VGuild Timestamp Location Killshot_Log
+--Cross server ranking system (bnet channels)
+--
 
-local version = "1.13.02." .. "@project-revision@"
+local version = "1.13.02." .. "@project-version@"
+local databaseversion = "1"
 local streak = 0
 local deathstreak = 0
 local multikill = 0
