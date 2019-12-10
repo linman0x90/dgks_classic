@@ -1,4 +1,4 @@
-## Interface: 11302
+## Interface: 11303
 ## Title: dG KillShot 
 ## Notes: Lets people know you got a killshot.
 ## Author: @project-author@ 
