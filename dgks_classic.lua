@@ -1,4 +1,5 @@
 --TODO List
+-- Twitch is dumb
 --Duel win detection
 --Pet kills on Hunters
 --Battleground start msg closer to start of bg
