@@ -1,8 +1,8 @@
-## Interface: 11303
-## Title: dG KillShot 
+## Interface: 11305
+## Title: dG KillShot Classic
 ## Notes: Lets people know you got a killshot.
 ## Author: @project-author@ 
-## Version: 8.1.0.@project-revision@ 
+## Version: 1.13.3.@project-revision@ 
 ## OptionalDeps: Ace3, LibSink-2.0
 ## SavedVariables: dgksDB
 ## SavedVariablesPerCharacter: dgksDBPC

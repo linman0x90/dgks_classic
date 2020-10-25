@@ -1,5 +1,4 @@
 --TODO List
--- Twitch is dumb
 --Duel win detection
 --Pet kills on Hunters
 --Battleground start msg closer to start of bg
@@ -38,7 +37,15 @@ local targetList = {} -- Used for Execute
 local playerName = UnitName("Player")
 local lastMessage, lastSender, lastTimestamp --Versionchecking duplicate detection
 
+
 dgks = LibStub("AceAddon-3.0"):NewAddon("dgks", "AceEvent-3.0", "AceConsole-3.0", "LibSink-2.0","AceComm-3.0","AceSerializer-3.0")
+
+
+-- FIXME Hack for classic since IsActiveBattlefieldArena does not exist yet
+function IsActiveBattlefieldArena()
+	return false
+end
+
 
 function sortListByLength(t,a,b)
 	local acount, bcount = 0,0
