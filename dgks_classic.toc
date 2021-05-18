@@ -1,16 +1,17 @@
-## Interface: 11307
+## Interface: 20501
 ## Interface-Classic: 11307
 ## Interface-BCC: 20501
 ## Title: dG KillShot Classic
 ## Notes: Lets people know you got a killshot.
 ## Author: @project-author@ 
-## Version: 1.13.3.@project-revision@ 
+## Version: @project-version@ 
 ## OptionalDeps: Ace3, LibSink-2.0
 ## SavedVariables: dgksDB
 ## SavedVariablesPerCharacter: dgksDBPC
 ## X-Embeds: Ace3, LibSink-2.0
 ## X-Website: http://www.wowace.com
 ## X-Category: Interface Enhancements
+## X-Curse-Project-ID: 340152
 
 #@no-lib-strip@
 Libs\LibStub\LibStub.lua
