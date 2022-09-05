@@ -1,0 +1,30 @@
+## Interface: 20501
+## Interface-Classic: 11307
+## Interface-BCC: 20501
+## Title: dG KillShot Classic
+## Notes: Lets people know you got a killshot.
+## Author: @project-author@ 
+## Version: @project-version@ 
+## OptionalDeps: Ace3, LibSink-2.0
+## SavedVariables: dgksDB
+## SavedVariablesPerCharacter: dgksDBPC
+## X-Embeds: Ace3, LibSink-2.0
+## X-Website: http://www.wowace.com
+## X-Category: Interface Enhancements
+## X-Curse-Project-ID: 340152
+
+#@no-lib-strip@
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+Libs\AceAddon-3.0\AceAddon-3.0.xml
+Libs\AceGUI-3.0\AceGUI-3.0.xml
+libs\AceEvent-3.0\AceEvent-3.0.xml
+Libs\AceConfig-3.0\AceConfig-3.0.xml
+Libs\AceConsole-3.0\AceConsole-3.0.xml
+Libs\AceDB-3.0\AceDB-3.0.xml
+Libs\AceComm-3.0\AceComm-3.0.xml
+Libs\AceSerializer-3.0\AceSerializer-3.0.xml
+Libs\LibSink-2.0\LibSink-2.0\lib.xml
+#@end-no-lib-strip@
+##dgks_classic_emotes.lua
+dgks_classic.lua
