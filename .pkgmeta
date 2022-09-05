@@ -1,0 +1,7 @@
+package-as: dgks_classic
+
+license-output: LICENSE.txt
+
+enable-nolib-creation: no
+
+   
