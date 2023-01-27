@@ -1560,7 +1560,7 @@ end
 
 function dgks:KillshotRX(prefix, message, distribution, sender)
 	-- Deserialize variables from message to kso object
-	local ok,rxkiller,rxvictim,rxtimestamp,rxstreak,rxmultikill = dgks:Deserialize(message)
+	local ok,rxkiller,rxvictim,rxtimestamp,rxstreak,rxmultikill,rxkillermessage = dgks:Deserialize(message)
 	if not ok then
 		return
 	else 	
@@ -1579,7 +1579,7 @@ function dgks:KillshotRX(prefix, message, distribution, sender)
 		lastrxkiller, lastrxvictim, lastrxtimestamp = rxkiller, rxvictim, rxtimestamp
 	
 		-- Generate Text
-		killshottext = string.gsub(string.gsub(dgks.db.profile.kstext, "$k", rxkiller), "$v", rxvictim)
+		killshottext = string.gsub(string.gsub(rxkillermessage, "$k", rxkiller), "$v", rxvictim)
 		
 		-- Send to sink for local output
 		self:ScrollText(killshottext)
@@ -1650,24 +1650,24 @@ function dgks:KillshotTX(txvictim,txtimestamp)
 	
 	-- Broadcast our Killshot
 	-- Whisper to ourselves just in case boardcasts are off
-	self:SendCommMessage("dgks",dgks:Serialize(playerName,txvictim,txtimestamp,streak,multikill),"WHISPER",playerName)
+	self:SendCommMessage("dgks",dgks:Serialize(playerName,txvictim,txtimestamp,streak,multikill, dgks.db.profile.kstext),"WHISPER",playerName)
 	
 	if dgks.db.profile.doguild then
 		if IsInGuild() then
-			self:SendCommMessage("dgks",dgks:Serialize(playerName,txvictim,txtimestamp,streak,multikill),"GUILD")
+			self:SendCommMessage("dgks",dgks:Serialize(playerName,txvictim,txtimestamp,streak,multikill, dgks.db.profile.kstext),"GUILD")
 		end
 	end
 	if dgks.db.profile.dobg then
 		if UnitInBattleground("Player") then
-			self:SendCommMessage("dgks",self:Serialize(playerName,txvictim,txtimestamp,streak,multikill),"BATTLEGROUND")
+			self:SendCommMessage("dgks",self:Serialize(playerName,txvictim,txtimestamp,streak,multikill, dgks.db.profile.kstext),"BATTLEGROUND")
 		end
 	end	
 	if dgks.db.profile.doraid then
 		-- Raid/Party Broadcast on
 		if IsInRaid() and not IsActiveBattlefieldArena() and not UnitInBattleground("Player") then
-			self:SendCommMessage("dgks",dgks:Serialize(playerName,txvictim,txtimestamp,streak,multikill),"RAID") 
+			self:SendCommMessage("dgks",dgks:Serialize(playerName,txvictim,txtimestamp,streak,multikill, dgks.db.profile.kstext),"RAID")
 		else 
-			self:SendCommMessage("dgks",dgks:Serialize(playerName,txvictim,txtimestamp,streak,multikill),"PARTY")
+			self:SendCommMessage("dgks",dgks:Serialize(playerName,txvictim,txtimestamp,streak,multikill, dgks.db.profile.kstext),"PARTY")
 		end
 	end
 end
