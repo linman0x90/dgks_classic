@@ -1946,8 +1946,8 @@ function events:ZONE_CHANGED_NEW_AREA(info, event, ...)
 		deathstreak = 0
 	end
 
-	inArena = IsActiveBattlefieldArena()
-	
+	inArena = IsActiveBattlefieldArena() or false
+
 	--if (dgks.db.profile.dopreparesound) then
 		--local junk
 		--junk, inbg = IsInInstance()
