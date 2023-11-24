@@ -17,7 +17,7 @@
 --Cross Character Killer Klvl Kclass KGuild Victim Vlvl VClass VGuild Timestamp Location Killshot_Log
 --Cross server ranking system (bnet channels)
 
-local version = "3.4.0." .. "@project-version@"
+local version = "@project-version@"
 local databaseversion = "1"
 local streak = 0
 local deathstreak = 0
@@ -34,17 +34,10 @@ local frame, events = CreateFrame("Frame"), {};
 local damageDealers = {}
 local targetList = {} -- Used for Execute
 local playerName = UnitName("Player")
+local inArena = 0
 local lastMessage, lastSender, lastTimestamp --Versionchecking duplicate detection
 
-
 dgks = LibStub("AceAddon-3.0"):NewAddon("dgks", "AceEvent-3.0", "AceConsole-3.0", "LibSink-2.0","AceComm-3.0","AceSerializer-3.0")
-
-
--- FIXME Hack for classic since IsActiveBattlefieldArena does not exist yet
-function IsActiveBattlefieldArena()
-	return false
-end
-
 
 function sortListByLength(t,a,b)
 	local acount, bcount = 0,0
@@ -1664,7 +1657,7 @@ function dgks:KillshotTX(txvictim,txtimestamp)
 	end	
 	if dgks.db.profile.doraid then
 		-- Raid/Party Broadcast on
-		if IsInRaid() and not IsActiveBattlefieldArena() and not UnitInBattleground("Player") then
+		if IsInRaid() and not inArena and not UnitInBattleground("Player") then
 			self:SendCommMessage("dgks",dgks:Serialize(playerName,txvictim,txtimestamp,streak,multikill),"RAID") 
 		else 
 			self:SendCommMessage("dgks",dgks:Serialize(playerName,txvictim,txtimestamp,streak,multikill),"PARTY")
@@ -1755,7 +1748,7 @@ function dgks:DuelTX(txvictim,txtimestamp)
 	end
 	if dgks.db.profile.doraid then
 		-- Raid/Party Broadcast on
-		if IsInRaid() and not IsActiveBattlefieldArena() and not UnitInBattleground("Player") then
+		if IsInRaid() and not inArena and not UnitInBattleground("Player") then
 			self:SendCommMessage("dgksDUEL",dgks:Serialize(playerName,txvictim,txtimestamp,streak,multikill),"RAID") 
 		else 
 			self:SendCommMessage("dgksDUEL",dgks:Serialize(playerName,txvictim,txtimestamp,streak,multikill),"PARTY")
@@ -1855,7 +1848,7 @@ function dgks:ScrollText(msg)
 		--	dgks:Print("Setting Combat Scrolling Text for Self to enabled. Please /reload your UI or restart client.")
 		--	SetCVar("enableFloatingCombatText", 1)
 		--end
-		dgks.Pour(dgks, msg, 1.0, 0.1, 0.1)
+		dgks:Pour(msg, 1.0, 0.1, 0.1)
 		
 	end
 end
@@ -1952,7 +1945,9 @@ function events:ZONE_CHANGED_NEW_AREA(info, event, ...)
 		streak = 0
 		deathstreak = 0
 	end
-		
+
+	inArena = IsActiveBattlefieldArena()
+	
 	--if (dgks.db.profile.dopreparesound) then
 		--local junk
 		--junk, inbg = IsInInstance()
