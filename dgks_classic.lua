@@ -2006,4 +2006,5 @@ function dgks:OnEnable()
 		frame:RegisterEvent(k);
 	end
 	--self:SetSinkStorage(self.db.profile)
+	dgks:Print("Please switch to dG Killshot, the classic specific version, dG Killshot Classic, is no longer getting updates.")
 end
