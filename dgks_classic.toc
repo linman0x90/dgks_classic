@@ -3,6 +3,7 @@
 ## Notes: Lets people know you got a killshot.
 ## Author: @project-author@ 
 ## Version: @project-version@ 
+## LoadManagers: dgks
 ## OptionalDeps: Ace3, LibSink-2.0
 ## SavedVariables: dgksDB
 ## SavedVariablesPerCharacter: dgksDBPC

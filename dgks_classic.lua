@@ -18,6 +18,7 @@
 
 local version = "@project-version@"
 local databaseversion = "1"
+local addonName, ns = ...
 local streak = 0
 local deathstreak = 0
 local multikill = 0
@@ -35,12 +36,13 @@ local playerName = UnitName("player")
 local inArena = false
 local inBG = false
 local lastMessage, lastSender, lastTimestamp --Versionchecking duplicate detection
+local soundPath = "Interface\\AddOns\\dgks\\sounds\\"
 
 --Do not load if this is dgks_classic and dgks is already loaded
-if C_AddOns.IsAddOnLoaded("dgks") then
+--[[ if C_AddOns.IsAddOnLoaded("dgks") then
 	SendSystemMessage("dG Killshot already loaded. Please uninstall dG Killshot Classic")
 	return
-end
+end ]]--
 
 dgks = LibStub("AceAddon-3.0"):NewAddon("dgks", "AceEvent-3.0", "AceConsole-3.0", "LibSink-2.0","AceComm-3.0","AceSerializer-3.0")
 
@@ -1367,7 +1369,7 @@ local defaults = {
 		kstext = "$k killed $v!",
 		dueltext = "$k has defeated $v!",
 		soundpack = "male",
-		soundpath = "Interface\\AddOns\\dgks_classic\\sounds\\",
+		soundpath = soundPath,
 		dotxtemote = false,
 		doemote = "none",
 		duelemotewin = "BOW",
@@ -1811,16 +1813,16 @@ end
 function dgks:setSoundPack(info, newsoundset)
     if (newsoundset == "male") then
         self.db.profile.soundpack = newsoundset
-        self.db.profile.soundpath = "Interface\\AddOns\\dgks_classic\\sounds\\"
+        self.db.profile.soundpath = soundPath
     elseif (newsoundset == "female") then
 		self.db.profile.soundpack = newsoundset
-		self.db.profile.soundpath = "Interface\\AddOns\\dgks_classic\\sounds\\female\\"
+		self.db.profile.soundpath = soundPath .. "\\female\\"
     elseif (newsoundset == "sexy") then
 		self.db.profile.soundpack = newsoundset
-		self.db.profile.soundpath = "Interface\\AddOns\\dgks_classic\\sounds\\sexy\\"
+		self.db.profile.soundpath = soundPath .. "\\sexy\\"
     elseif (newsoundset == "baby") then
 		self.db.profile.soundpack = newsoundset
-		self.db.profile.soundpath = "Interface\\AddOns\\dgks_classic\\sounds\\baby\\"
+		self.db.profile.soundpath = soundPath .. "\\baby\\"
     else
         message("Error: That is not a valid option")
     end
@@ -2046,5 +2048,10 @@ function dgks:OnEnable()
 		frame:RegisterEvent(k);
 	end
 	--self:SetSinkStorage(self.db.profile)
-	dgks:Print("Please switch to dG Killshot, the classic specific version, dG Killshot Classic, is no longer getting updates.")
+--Check if this is dgks_classic, if so print warning and set path correctly
+		if (addonName == "dgks_classic") then
+		SendSystemMessage("Please switch to dG Killshot, the classic specific version, dG Killshot Classic, is no longer getting updates.")
+		soundPath = "Interface\\AddOns\\dgks_classic\\sounds\\"
+	end
+
 end
