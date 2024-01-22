@@ -1625,7 +1625,7 @@ end
 function dgks:OnCommReceived(cchan, message, distribution, sender)
 	
 	--If broadcast type is off return
-	if not dgks.db.profile.dobroadcasts and distribution == "YELL" then return end 	
+	if not dgks.db.profile.dobroadcasts then return end
 	-- If Guild broadcast is off and we received a guild broadcast just return
 	if not dgks.db.profile.doguild and distribution == "GUILD" then return end
 	-- If raid broadcast is off and we received a raid broadcast just return
