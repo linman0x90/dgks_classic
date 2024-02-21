@@ -16,6 +16,11 @@
 --Cross Character Killer Klvl Kclass KGuild Victim Vlvl VClass VGuild Timestamp Location Killshot_Log
 --Cross server ranking system (bnet channels)
 
+--Blood Moon Notes
+--2/18 17:11:17.231  SPELL_AURA_APPLIED,Player-5814-01E766E1,"Armena-LoneWolf",0x548,0x0,Player-5814-01E766E1,"Armena-LoneWolf",0x548,0x0,436097,"Blood Moon",0x1,BUFF
+--2/18 17:30:38.447  SPELL_AURA_REMOVED,Player-5814-01D25EEF,"Nop-LoneWolf",0x511,0x1,Player-5814-01D25EEF,"Nop-LoneWolf",0x511,0x1,436097,"Blood Moon",0x1,BUFF
+
+
 local version = "@project-version@"
 local databaseversion = "1"
 local addonName, ns = ...
@@ -1364,7 +1369,7 @@ local defaults = {
 		kstext = "$k killed $v!",
 		dueltext = "$k has defeated $v!",
 		soundpack = "male",
-		soundpath = soundPath,
+		soundpath = "Interface\\AddOns\\dgks_classic\\sounds\\",
 		dotxtemote = false,
 		doemote = "none",
 		duelemotewin = "BOW",
@@ -1404,7 +1409,7 @@ local defaults = {
 		damageDealers = {},
 		killList = {},
 		deathList = {},
-		kssoundH = "humiliation.ogg",	
+		kssoundH = "humiliation.ogg",
 		sink20Sticky = true,
 		sink20OutputSink = "Default",
 		sink20ScrollArea = "Outgoing",
@@ -1414,15 +1419,21 @@ local defaults = {
 function dgks:OnInitialize()
 
 	-- Setup DB
-	self.db = LibStub("AceDB-3.0"):New("dgksDB", defaults, "Default")
+	self.db = LibStub("AceDB-3.0"):New("dgksDB", defaults, true)
+
+	self:SetSinkStorage(self.db.profile)
 
 	-- Increment newestconfigversion to reset db to defaults when needed
-	self:SetSinkStorage(self.db.profile)
 	if (dgks.db.profile.configversion < newestconfigversion ) then
 		dgks:Print("Config outdated, reverting to defaults.")
 		dgks.db:ResetProfile()
 	end
-	
+
+	if (addonName == "dgks_classic") then
+		SendSystemMessage("Please switch to dG Killshot, the classic specific version, dG Killshot Classic, is no longer getting updates.")
+		self.db.soundPath = "Interface\\AddOns\\dgks_classic\\sounds\\"
+	end
+
 	-- Setup Config Screens
 	local AceConfigRegistry = LibStub("AceConfigRegistry-3.0")
 
@@ -1464,6 +1475,11 @@ end
 function dgks:SoundEventHandler(info, sound)
 	if (dgks.db.profile.dosound) then
 		if (tonumber(GetCVar("Sound_EnableAllSound") and GetCVar("Sound_EnableSFX")) == 1) then
+			--@debug@
+				-- Dev Debugging functions
+				self.Print("DEBUG: Sound: " .. sound )
+				self.Print("DEBUG: Soundchannel: " .. dgks.db.profile.soundchannel )
+			--@end-debug@
 			PlaySoundFile(sound,dgks.db.profile.soundchannel)
 		end
 	end
@@ -1625,7 +1641,7 @@ end
 function dgks:OnCommReceived(cchan, message, distribution, sender)
 	
 	--If broadcast type is off return
-	if not dgks.db.profile.dobroadcasts then return end
+	if not dgks.db.profile.dobroadcasts and sender ~= playerName then return end
 	-- If Guild broadcast is off and we received a guild broadcast just return
 	if not dgks.db.profile.doguild and distribution == "GUILD" then return end
 	-- If raid broadcast is off and we received a raid broadcast just return
@@ -1641,17 +1657,20 @@ function dgks:OnCommReceived(cchan, message, distribution, sender)
 	--@end-debug@
 	if cchan == "dgksVR" then
 		if sender ~= playerName then self:Print(sender .. " is on version " .. message) end
-	
+
 	elseif cchan == "dgksV" then
 		-- Check for duplicates here
 		if sender == lastSender and message == lastMessage and timestamp == lastTimestamp then return end
 		-- Respond with our version
+
+		--@debug@
+		-- No need to print unless debugging
 		self:Print(sender .. " is on version " .. message)
-		--FIXME Should this use SendCM function?
-		--C_ChatInfo.SendAddonMessage("dgksVR", version, WHISPER, sender)
+		--@end-debug@
+
 		--This should always be a direct whisper
 		self:SendCommMessage("dgksVR",version,WHISPER,sender)
-	
+
 	elseif cchan == "dgks" or "dgksDUEL" then
 		--Verify we have a valid event	
 		local ok,rxkiller,rxvictim,rxtimestamp,rxstreak,rxmultikill = dgks:Deserialize(message)
@@ -1807,13 +1826,13 @@ function dgks:setSoundPack(info, newsoundset)
         self.db.profile.soundpath = soundPath
     elseif (newsoundset == "female") then
 		self.db.profile.soundpack = newsoundset
-		self.db.profile.soundpath = soundPath .. "\\female\\"
+		self.db.profile.soundpath = soundPath .. "\female\\"
     elseif (newsoundset == "sexy") then
 		self.db.profile.soundpack = newsoundset
-		self.db.profile.soundpath = soundPath .. "\\sexy\\"
+		self.db.profile.soundpath = soundPath .. "\sexy\\"
     elseif (newsoundset == "baby") then
 		self.db.profile.soundpack = newsoundset
-		self.db.profile.soundpath = soundPath .. "\\baby\\"
+		self.db.profile.soundpath = soundPath .. "\baby\\"
     else
         message("Error: That is not a valid option")
     end
@@ -1831,7 +1850,7 @@ function dgks:SendCM(cchan,msg)
 	-- Whisper to ourselves if broadcasts are off or guild is off or we are not in a guild
 	if not dgks.db.profile.dobroadcasts or not dgks.db.profile.doguild or not IsInGuild() then
 		--@debug@
-		self:Print("Sending: CChan= " .. cchan .. " " .. msg .. " to WHISPER self")
+		self:Print("Sending: CChan= " .. cchan .. " " .. msg .. " to WHISPER " .. playerName)
 		--@end-debug@
 		self:SendCommMessage(cchan,msg,"WHISPER",playerName)
 	end
@@ -2050,9 +2069,5 @@ function dgks:OnEnable()
 	end
 	--self:SetSinkStorage(self.db.profile)
 	--Check if this is dgks_classic, if so print warning and set path correctly
-	if (addonName == "dgks_classic") then
-		SendSystemMessage("Please switch to dG Killshot, the classic specific version, dG Killshot Classic, is no longer getting updates.")
-		soundPath = "Interface\\AddOns\\dgks_classic\\sounds\\"
-	end
 
 end
