@@ -1461,8 +1461,8 @@ function dgks:OnInitialize()
 
 	-- Setup slash commands
 	-- The triple call fixes bug that doesn't open on first run and expans the sub pages
-	self:RegisterChatCommand("dgks", function() InterfaceOptionsFrame_OpenToCategory("dG KillShot") InterfaceOptionsFrame_OpenToCategory("General") InterfaceOptionsFrame_OpenToCategory("dG KillShot") end)
-	self:RegisterChatCommand("ks", function() InterfaceOptionsFrame_OpenToCategory("dG KillShot") InterfaceOptionsFrame_OpenToCategory("General") InterfaceOptionsFrame_OpenToCategory("dG KillShot") end)
+	self:RegisterChatCommand("dgks", function() Settings.OpenToCategory("dG KillShot") end)
+	self:RegisterChatCommand("ks", function() Settings.OpenToCategory("dG KillShot") end)
 	
 	
 	-- Setup Comms

@@ -1,4 +1,4 @@
-## Interface: 100200
+## Interface: 110000
 ## Title: dG KillShot Classic
 ## Notes: Lets people know you got a killshot.
 ## Author: @project-author@ 
